@@ -1,0 +1,7 @@
+train: /home/brendantang/personal_projects/Skinalyzer2/train
+val: /home/brendantang/personal_projects/Skinalyzer2/val
+
+nc: 1
+
+names:
+  - acne
