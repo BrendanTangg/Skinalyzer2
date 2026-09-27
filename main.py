@@ -1,3 +1,4 @@
+from ultralytics import YOLO
 import cv2
 import mediapipe as mp
 from mediapipe.tasks import python
@@ -6,6 +7,7 @@ import time
 import os
 
 model_path = 'models/face_landmarker.task'
+acne_model = YOLO("skinalyzer2.pt")
 
 BaseOptions = mp.tasks.BaseOptions
 FaceLandmarker = mp.tasks.vision.FaceLandmarker
@@ -53,6 +55,16 @@ with FaceLandmarker.create_from_options(options) as landmarker:
 
         last_timestamp_ms = timestamp_ms
         landmarker.detect_async(mp_image, timestamp_ms)
+
+        # Run acne detection on the current webcam frame
+        acne_results = acne_model.predict(
+            source=frame,
+            conf=0.4,
+            verbose=False
+        )
+
+        # Draw YOLO acne bounding boxes onto the frame
+        frame = acne_results[0].plot()
 
         if latest_face_result and latest_face_result.face_landmarks:
             h, w = frame.shape[:2]
