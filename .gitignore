@@ -2,3 +2,7 @@
 labelstudio_env/
 project-4-at-2026-09-27-09-49-dd1e9556.zip
 yolo26m.pt
+best.pt:Zone.Identifier
+runs/
+train/labels.cache
+val/labels.cache
