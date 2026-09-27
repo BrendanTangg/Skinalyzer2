@@ -59,7 +59,7 @@ with FaceLandmarker.create_from_options(options) as landmarker:
         # Run acne detection on the current webcam frame
         acne_results = acne_model.predict(
             source=frame,
-            conf=0.4,
+            conf=0.2,
             verbose=False
         )
 
@@ -134,14 +134,6 @@ with FaceLandmarker.create_from_options(options) as landmarker:
             forehead_y1 = max(0, forehead_y - forehead_height)
             forehead_y2 = min(h, forehead_y + forehead_height)
 
-            left_cheek = frame[left_y1:left_y2, left_x1:left_x2]
-            right_cheek = frame[right_y1:right_y2, right_x1:right_x2]
-
-            forehead = frame[
-            forehead_y1:forehead_y2,
-            forehead_x1:forehead_x2
-        ]
-
             cv2.rectangle(
                 frame,
                 (left_x1, left_y1),
@@ -165,99 +157,6 @@ with FaceLandmarker.create_from_options(options) as landmarker:
                 (255, 0, 0),
                 2
             )
-
-            if left_cheek.size > 0 and right_cheek.size > 0 and forehead.size > 0:
-                # Convert skin regions to grayscale
-                left_gray = cv2.cvtColor(left_cheek, cv2.COLOR_BGR2GRAY)
-                right_gray = cv2.cvtColor(right_cheek, cv2.COLOR_BGR2GRAY)
-                forehead_gray = cv2.cvtColor(forehead, cv2.COLOR_BGR2GRAY)
-
-                # Reduce camera noise
-                left_gray = cv2.GaussianBlur(left_gray, (3, 3), 0)
-                right_gray = cv2.GaussianBlur(right_gray, (3, 3), 0)
-                forehead_gray = cv2.GaussianBlur(forehead_gray, (3, 3), 0)
-
-                # Calculate Laplacian
-                left_laplacian = cv2.Laplacian(left_gray, cv2.CV_64F)
-                right_laplacian = cv2.Laplacian(right_gray, cv2.CV_64F)
-                forehead_laplacian = cv2.Laplacian(forehead_gray, cv2.CV_64F)
-
-                # Calculate texture scores
-                left_texture = left_laplacian.var()
-                right_texture = right_laplacian.var()
-                forehead_texture = forehead_laplacian.var()
-
-                # Average the two cheeks
-                texture_score = (left_texture + right_texture + forehead_texture) / 3
-
-                cv2.putText(
-                    frame,
-                    f"Left: {left_texture:.1f}",
-                    (20, 40),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.7,
-                    (255, 0, 0),
-                    2
-                )
-
-                cv2.putText(
-                    frame,
-                    f"Right: {right_texture:.1f}",
-                    (20, 70),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.7,
-                    (255, 0, 0),
-                    2
-                )
-
-                cv2.putText(
-                    frame,
-                    f"Forehead: {forehead_texture:.1f}",
-                    (20, 100),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.7,
-                    (255, 0, 0),
-                    2
-                )
-
-                cv2.putText(
-                    frame,
-                    f"Average: {texture_score:.1f}",
-                    (20, 130),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.7,
-                    (255, 0, 0),
-                    2
-                )
-
-            #Draw cheek points
-            cv2.circle(
-                frame,
-                (left_cheek_x, left_cheek_y),
-                8,
-                (0, 0, 255),
-                -1
-            )
-
-            cv2.circle(
-                frame,
-                (right_cheek_x, right_cheek_y),
-                8,
-                (0, 0, 255),
-                -1
-            )
-
-            for lm in face_landmarks:
-                x = int(lm.x * w)
-                y = int(lm.y * h)
-
-                cv2.circle(
-                    frame,
-                    (x, y),
-                    1,
-                    (0, 255, 0),
-                    -1
-                )
 
         cv2.imshow("Webcam", frame)
         if cv2.waitKey(1) == ord('q'):
