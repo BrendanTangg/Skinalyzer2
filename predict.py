@@ -1,5 +1,12 @@
+from pathlib import Path
 from ultralytics import YOLO
 
-model = YOLO("skinalyzer2.pt")
+HERE = Path(__file__).resolve().parent  # the Skinalyzer2 folder
 
-model.predict(source = 0, show=True, save=True, conf=0.4)
+model = YOLO(HERE / "skinalyzer2.pt")
+
+results = model.predict(source=HERE / "captures/EXP-001", conf=0.25, imgsz=1024, save=True,
+                        project=HERE / "runs/detect", name="EXP-001", exist_ok=True)
+
+for r in results:
+    print(r.path, len(r.boxes))
