@@ -1,0 +1,7 @@
+image,view,lesion_id,x1,y1,x2,y2
+face1_frontal.jpg,frontal,A1,812,1033,834,1052
+face1_frontal.jpg,frontal,A2,901,1240,918,1259
+face1_left30.jpg,left30,A1,640,1029,659,1047
+face1_left60.jpg,left60,A1,522,1040,538,1057
+face1_right30.jpg,right30,A2,955,1236,972,1254
+face2_frontal.jpg,frontal,,,,,
