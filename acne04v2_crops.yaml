@@ -1,0 +1,8 @@
+# Acne04-v2 photos cropped to the face like the app does (prepare_app_crops.py)
+# Research use only: ACNE04 is 'free for academic usage'; Acne04-v2 states no license.
+path: /home/brendantang/personal_projects/Skinalyzer2/datasets/acne04v2_crops
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: acne

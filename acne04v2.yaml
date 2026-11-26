@@ -1,0 +1,8 @@
+# Acne04-v2 labels on ACNE04 photos, made by prepare_acne04v2.py
+# Research use only: ACNE04 is 'free for academic usage'; Acne04-v2 states no license.
+path: /home/brendantang/personal_projects/Skinalyzer2/datasets/acne04v2_yolo
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: acne
